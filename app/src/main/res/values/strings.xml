@@ -3,4 +3,7 @@
     <string name="adrijana_savic">Adrijana Savic</string>
     <string name="splashtime_key">splashtime_settings</string>
     <string name="splash_key">splash_settings</string>
+    <string name="omiljeni">Omiljeni filmovi</string>
+    <string name="settings">Settings</string>
+    <string name="movie_name">Unesite ime filma</string>
 </resources>
