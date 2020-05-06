@@ -1,4 +1,4 @@
-package com.example.a8filmovizapogledati;
+package com.example.a8filmovizapogledati.activities;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -10,11 +10,12 @@ import android.widget.ImageView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.a8filmovizapogledati.R;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.regex.Matcher;
 
 public class SplashScreen extends AppCompatActivity {
 
