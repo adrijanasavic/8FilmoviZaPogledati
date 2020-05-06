@@ -1,5 +1,6 @@
 package com.example.a8filmovizapogledati.activities;
 
+import android.app.AlertDialog;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
@@ -10,13 +11,20 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.NotificationCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -25,6 +33,7 @@ import com.example.a8filmovizapogledati.R;
 import com.example.a8filmovizapogledati.adapters.OmiljeniAdapter;
 import com.example.a8filmovizapogledati.db.DatabaseHelper;
 import com.example.a8filmovizapogledati.db.model.Filmovi;
+import com.example.a8filmovizapogledati.dialog.AboutDialog;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 
 import java.sql.SQLException;
@@ -39,6 +48,14 @@ public class OmiljeniActivity extends AppCompatActivity implements OmiljeniAdapt
     private SharedPreferences prefs;
 
     private Toolbar toolbar;
+    private List<String> drawerItems;
+    private DrawerLayout drawerLayout;
+    private ListView drawerList;
+
+    private RelativeLayout drawerPane;
+    private ActionBarDrawerToggle drawerToggle;
+
+    private AlertDialog dialog;
 
     public static String KEY = "KEY";
     public static final String NOTIF_CHANNEL_ID = "notif_channel_007";
@@ -47,9 +64,16 @@ public class OmiljeniActivity extends AppCompatActivity implements OmiljeniAdapt
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.omiljeni_activity );
+        fillData();
+        fillDataDrawer();
+        setupToolbar();
+        setupDrawer();
 
+
+    }
+
+    private void fillData() {
         prefs = PreferenceManager.getDefaultSharedPreferences( this );
-
 
         recyclerView = findViewById( R.id.rvRepertoarLista );
         setupToolbar();
@@ -68,6 +92,74 @@ public class OmiljeniActivity extends AppCompatActivity implements OmiljeniAdapt
         recyclerView.setAdapter( adapterLista );
     }
 
+    private void setupDrawer() {
+        drawerList = findViewById( R.id.left_drawer );
+        drawerLayout = findViewById( R.id.drawer_layout );
+        drawerPane = findViewById( R.id.drawerPane );
+
+        drawerList.setOnItemClickListener( new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                String title = "Unknown";
+                switch (i) {
+                    case 0:
+                        title = "Pretraga filmova";
+                        startActivity( new Intent( OmiljeniActivity.this, MainActivity.class ) );
+                        break;
+                    case 1:
+                        title = "Settings";
+                        startActivity( new Intent( OmiljeniActivity.this, SettingsActivity.class ) );
+                        break;
+                    case 2:
+                        title = "About";
+                        showDialog();
+                        break;
+
+                }
+                drawerList.setItemChecked( i, true );
+                setTitle( title );
+                drawerLayout.closeDrawer( drawerPane );
+            }
+        } );
+        drawerList.setAdapter( new ArrayAdapter<>( this, android.R.layout.simple_list_item_1, drawerItems ) );
+
+
+        drawerToggle = new ActionBarDrawerToggle(
+                this,
+                drawerLayout,
+                toolbar,
+                R.string.app_name,
+                R.string.app_name
+        ) {
+            public void onDrawerClosed(View view) {
+                invalidateOptionsMenu();
+            }
+
+            public void onDrawerOpened(View drawerView) {
+                invalidateOptionsMenu();
+            }
+        };
+    }
+
+    private void fillDataDrawer() {
+        drawerItems = new ArrayList<>();
+        drawerItems.add( "Pretraga filmova" );
+        drawerItems.add( "Settings" );
+        drawerItems.add( "About" );
+
+    }
+
+    private void showDialog() {
+        if (dialog == null) {
+            dialog = new AboutDialog( OmiljeniActivity.this ).prepareDialog();
+        } else {
+            if (dialog.isShowing()) {
+                dialog.dismiss();
+            }
+        }
+        dialog.show();
+    }
+
     public void setupToolbar() {
         toolbar = findViewById( R.id.toolbar );
         setSupportActionBar( toolbar );
@@ -78,7 +170,7 @@ public class OmiljeniActivity extends AppCompatActivity implements OmiljeniAdapt
 
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled( true );
-            actionBar.setHomeAsUpIndicator( R.drawable.back );
+            actionBar.setHomeAsUpIndicator( R.drawable.menu );
             actionBar.setHomeButtonEnabled( true );
             actionBar.show();
         }
