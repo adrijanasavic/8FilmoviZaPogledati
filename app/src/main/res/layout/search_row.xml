@@ -48,10 +48,10 @@
             android:id="@+id/tvYear"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/tvGodina"
+            android:layout_below="@id/tvTitle"
             android:layout_marginLeft="10dp"
             android:layout_marginBottom="5dp"
-            android:layout_toRightOf="@id/ivPoster"
+            android:layout_toRightOf="@id/tvGodina"
             android:textSize="14sp"
             android:textStyle="italic"
             tools:text="Year" />
