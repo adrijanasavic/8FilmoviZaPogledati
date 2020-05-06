@@ -5,10 +5,12 @@
     <item
         android:id="@+id/omiljeni_lista"
         android:title="@string/omiljeni"
+        android:icon="@drawable/omiljeni"
         app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/settings"
         android:title="@string/settings"
+        android:icon="@drawable/seetings"
         app:showAsAction="ifRoom" />
 </menu>

@@ -81,9 +81,11 @@ public class MainActivity extends AppCompatActivity implements SearchAdapter.OnI
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.omiljeni_lista:
+                startActivity( new Intent( this, OmiljeniActivity.class ) );
                 break;
 
             case R.id.settings:
+                startActivity( new Intent( this, SettingsActivity.class ) );
                 break;
         }
 
@@ -156,7 +158,7 @@ public class MainActivity extends AppCompatActivity implements SearchAdapter.OnI
     public void onItemClick(int position) {
         Search movie = adapter.get( position );
 
-        Intent i = new Intent( this, DetaljiActivity.class );
+        Intent i = new Intent( this, DetailsActivity.class );
         i.putExtra( KEY, movie.getImdbID() );
         startActivity( i );
     }
